@@ -23,7 +23,7 @@ from typing import Union  # Import Union for type hinting multiple possible type
 # Define a type alias for numbers that can be either int or float
 Number = Union[int, float]
 
-def add(a: Number, b: Number) -> Number:
+def add(a: Number, b: Number) -> Number: # type: ignore
     """
     Add two numbers and return the result.
 
@@ -44,7 +44,7 @@ def add(a: Number, b: Number) -> Number:
     result = a + b
     return result
 
-def subtract(a: Number, b: Number) -> Number:
+def subtract(a: Number, b: Number) -> Number: # type: ignore
     """
     Subtract the second number from the first and return the result.
 
@@ -65,7 +65,7 @@ def subtract(a: Number, b: Number) -> Number:
     result = a - b
     return result
 
-def multiply(a: Number, b: Number) -> Number:
+def multiply(a: Number, b: Number) -> Number: # type: ignore
     """
     Multiply two numbers and return the product.
 
@@ -86,7 +86,7 @@ def multiply(a: Number, b: Number) -> Number:
     result = a * b
     return result
 
-def divide(a: Number, b: Number) -> float:
+def divide(a: Number, b: Number) -> float: # type: ignore
     """
     Divide the first number by the second and return the quotient.
 
@@ -118,3 +118,38 @@ def divide(a: Number, b: Number) -> float:
     # Perform division of a by b and return the result as a float
     result = a / b
     return result
+
+from numbers import Number
+
+def power(a: Number, b: Number) -> float: # type: ignore
+    """
+    Raise the first number (base) to the power of the second (exponent) and return the result.
+
+    Parameters:
+    - a (int or float): The base.
+    - b (int or float): The exponent.
+
+    Returns:
+    - float: The result of a raised to the power of b.
+
+    Raises:
+    - ValueError: If a is 0 and b <= 0, as the result is undefined or would cause division by zero.
+
+    Example:
+    >>> power(2, 3)
+    8.0
+    >>> power(5.5, 2)
+    30.25
+    >>> power(0, -1)
+    Traceback (most recent call last):
+        ...
+    ValueError: 0 cannot be raised to 0 or a negative power!
+    """
+    # Check if base is zero and exponent is zero or negative
+    if a == 0 and b <= 0:
+        # Raise a ValueError with a descriptive message
+        raise ValueError("0 cannot be raised to 0 or a negative power!")
+    
+    # Perform exponentiation of a by b and return the result as a float
+    result = a ** b
+    return float(result)

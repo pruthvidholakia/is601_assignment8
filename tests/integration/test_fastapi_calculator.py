@@ -152,3 +152,62 @@ def test_divide_by_zero_api(client):
     # Assert that the 'error' field contains the correct error message
     assert "Cannot divide by zero!" in response.json()['error'], \
         f"Expected error message 'Cannot divide by zero!', got '{response.json()['error']}'"
+
+# -------------------------------------------------
+# Test Function: test_power_api
+# -------------------------------------------------
+
+def test_power_api(client):
+    """
+    Test the Power API endpoint.
+
+    This test verifies that the `/power` endpoint correctly raises one number
+    to the power of another given in the JSON payload and returns the expected
+    result.
+    
+    Steps:
+    1. Send a POST request to the `/power` endpoint with JSON data `{'a': 2, 'b': 3}`.
+    2. Assert that the response status code is `200 OK`.
+    3. Assert that the JSON response contains the correct result (`8.0`).
+    """
+    # Send a POST request to the `/power` endpoint with JSON payload
+    response = client.post('/power', json={'a': 2, 'b': 3})
+
+    # Assert that the response status code is 200 (OK)
+    assert response.status_code == 200, (
+        f"Expected status code 200, got {response.status_code}"
+    )
+
+    # Assert that the JSON response contains the correct `result` value
+    assert response.json()['result'] == 8.0, (
+        f"Expected result 8.0, got {response.json()['result']}"
+    )
+
+# -------------------------------------------------
+# Test Function: test_power_invalid_api
+# -------------------------------------------------
+
+def test_power_invalid_api(client):
+    """
+    Test invalid input handling for the Power API endpoint.
+
+    This test submits a base of `0` with a negative exponent (`-1`),
+    which should trigger a 400 error from the application.
+
+    Steps:
+    1. Send a POST request to `/power` with JSON data `{'a': 0, 'b': -1}`.
+    2. Assert that the response status code is `400 Bad Request`.
+    3. Assert that the error message is descriptive.
+    """
+    # Send a POST request that should fail validation
+    response = client.post('/power', json={'a': 0, 'b': -1})
+
+    # Assert that the response status code is 400 (Bad Request)
+    assert response.status_code == 400, (
+        f"Expected status code 400, got {response.status_code}"
+    )
+
+    # Assert that the JSON response contains the correct `error` field
+    assert response.json()['error'] == '0 cannot be raised to 0 or a negative power!', (
+        f"Unexpected error message: {response.json()}"
+    )

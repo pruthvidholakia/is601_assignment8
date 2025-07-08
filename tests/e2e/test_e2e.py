@@ -137,3 +137,29 @@ def test_calculator_divide_by_zero(page, fastapi_server):
     # "Error: Cannot divide by zero!". This verifies that the application handles division by zero
     # gracefully and displays the correct error message to the user.
     assert page.inner_text('#result') == 'Error: Cannot divide by zero!'
+    
+@pytest.mark.e2e
+def test_calculator_power(page, fastapi_server):
+    """
+    Test the power functionality of the calculator.
+
+    This test simulates a user raising a number to a given power using the
+    calculator. It fills in the numbers, clicks the "power" button, and verifies
+    that the correct result is displayed.
+    """
+    # Navigate the browser to the homepage URL of the FastAPI application.
+    page.goto('http://localhost:8000')
+
+    # Fill in the first number input field (with id 'a') with the value '2'.
+    page.fill('#a', '2')
+
+    # Fill in the second number input field (with id 'b') with the value '3'.
+    page.fill('#b', '3')
+
+    # Click the button that has the exact text "power". This triggers the power operation.
+    page.click('button:text("power")')
+
+    # Use an assertion to check that the text within the result div (with id 'result') is exactly
+    # "Calculation Result: 8". This verifies that the power operation was performed correctly
+    # and the result is displayed as expected.
+    assert page.inner_text('#result') == 'Calculation Result: 8'    
